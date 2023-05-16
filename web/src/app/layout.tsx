@@ -7,7 +7,7 @@ import {
 } from 'next/font/google'
 
 const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' })
-const jamjuree = Bai_Jamjuree({
+const jamjuree = Jamjuree({
   subsets: ['latin'],
   weight: '700',
   variable: '--font-jamjuree',

@@ -1,8 +1,17 @@
 export default function Home() {
   return (
-    <div>
-      <div className="">TESTE CAPSLOOK</div>
-      <div className="font-alt">TESTE FONTE GAP</div>
-    </div>
+    <main className="grid min-h-screen grid-cols-2">
+      <div className="flex flex-col items-start justify-between px-2 py-16 "></div>
+      <div className="flex flex-col p-16">
+        <div className="flex flex-1 items-center justify-center">
+          <p className="w-[360px] text-center font-thin leading-relaxed">
+            Você ainda não registrou nenhuma lembrança, comece a{' '}
+            <a href="" className="underline hover:text-gray-50">
+              criar agora!
+            </a>
+          </p>
+        </div>
+      </div>
+    </main>
   )
 }

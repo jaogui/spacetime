@@ -1,3 +1,8 @@
 export default function Home() {
-  return <div className="w-2">gap</div>
+  return (
+    <div>
+      <div className="">TESTE CAPSLOOK</div>
+      <div className="font-alt">TESTE FONTE GAP</div>
+    </div>
+  )
 }

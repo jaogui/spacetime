@@ -1,5 +1,3 @@
 export default function Home() {
-  return (
-    <h1>Hello Word</h1>
-  )
+  return <div className="w-2">gap</div>
 }

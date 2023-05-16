@@ -50,6 +50,9 @@ module.exports = {
           900: '#025929',
         },
       },
+      blur: {
+        full: '184px',
+      },
     },
   },
   plugins: [],

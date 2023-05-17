@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify'
+import { z } from 'zod'
 import { prisma } from '../lib/prisma'
 
 export async function memoriesRoutes(app: FastifyInstance) {
@@ -18,7 +19,18 @@ export async function memoriesRoutes(app: FastifyInstance) {
     })
   })
   // Busca Memorias pelo id
-  app.get('/memories:id', async () => {})
+  app.get('/memories:id', async (request) => {
+    const paramsSchema = z.object({
+      id: z.string().uuid(),
+    })
+    const { id } = paramsSchema.parse(request.params)
+    const memory = await prisma.memoryPost.findUniqueOrThrow({
+      where: {
+        id,
+      },
+    })
+    return memory
+  })
   // Cria Memoria
   app.post('/memories', async () => {})
   // Atualiza Memoria

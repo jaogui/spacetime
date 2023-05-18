@@ -4,8 +4,15 @@ import { prisma } from '../lib/prisma'
 
 export async function memoriesRoutes(app: FastifyInstance) {
   // Busca Memorias
-  app.get('/memories', async () => {
+  app.get('/memories', async (request) => {
+    app.addHook('preHandler', async (request) => {
+      await request.jwtVerify()
+    })
+
     const memories = await prisma.memoryPost.findMany({
+      where: {
+        userId: request.user.sub,
+      },
       orderBy: {
         createAt: 'asc',
       },

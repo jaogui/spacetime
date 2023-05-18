@@ -10,6 +10,7 @@ export async function authRoutes(app: FastifyInstance) {
       code: z.string(),
     })
     const { code } = bodySchema.parse(request.body)
+
     const accessTokenResponse = await axios.post(
       'https://github.com/login/oauth/access_token',
       null,
@@ -25,11 +26,14 @@ export async function authRoutes(app: FastifyInstance) {
       },
     )
     const { access_token } = accessTokenResponse.data
+
     const userResponse = await axios.get('https://api.github.com/user', {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
     })
+
+    // Schema valida os dados do usuarios
     const userSchema = z.object({
       id: z.number(),
       login: z.string(),
@@ -40,7 +44,8 @@ export async function authRoutes(app: FastifyInstance) {
     const userInfo = userSchema.parse(userResponse.data)
     let user = await prisma.user.findUnique({
       where: {
-        githubId: userInfo.id,
+        githubId: String(userInfo.id),
+        // githubId: userInfo.id,
       },
     })
     // Cria usuário se não existir
@@ -53,12 +58,22 @@ export async function authRoutes(app: FastifyInstance) {
           avatarUrl: userInfo.avatar_url,
         },
       })
-      console.log('usuario criado')
+      console.log('novo usuario cadastrado')
     }
 
+    // Objeto de config Json web token
+    const token = app.jwt.sign(
+      {
+        name: user.name,
+        avatarUrl: user.avatarUrl,
+      },
+      {
+        sub: user.id,
+        expiresIn: '30 days',
+      },
+    )
     return {
-      user,
-      // access_token,
+      token,
     }
   })
 }

@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import axios from 'axios'
-import { z } from 'zod'
+import { string, z } from 'zod'
 
 export async function authRoutes(app: FastifyInstance) {
   app.post('/register', async (request) => {
@@ -26,10 +26,17 @@ export async function authRoutes(app: FastifyInstance) {
     const { access_token } = accessTokenResponse.data
     const userResponse = await axios.get('https://api.github.com/user', {
       headers: {
-        Authorization: `Berear ${access_token}`,
+        Authorization: `Bearer ${access_token}`,
       },
     })
-    const dataUser = userResponse.data
+    const userSchema = z.object({
+      id: z.number(),
+      login: z.string(),
+      name: z.string(),
+      avatar_url: z.string().url(),
+    })
+
+    const dataUser = userSchema.parse(userResponse.data)
 
     return {
       dataUser,

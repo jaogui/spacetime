@@ -5,7 +5,6 @@ import { prisma } from '../lib/prisma'
 
 export async function authRoutes(app: FastifyInstance) {
   app.post('/register', async (request) => {
-    console.log('entrou')
     const bodySchema = z.object({
       code: z.string(),
     })
@@ -32,6 +31,7 @@ export async function authRoutes(app: FastifyInstance) {
         Authorization: `Bearer ${access_token}`,
       },
     })
+    // console.log(userResponse.data)
 
     // Schema valida os dados do usuarios
     const userSchema = z.object({
@@ -44,10 +44,12 @@ export async function authRoutes(app: FastifyInstance) {
     const userInfo = userSchema.parse(userResponse.data)
     let user = await prisma.user.findUnique({
       where: {
-        githubId: String(userInfo.id),
+        githubId: userInfo.id,
         // githubId: userInfo.id,
       },
     })
+    console.log(user)
+
     // Cria usuário se não existir
     if (!user) {
       user = await prisma.user.create({
@@ -72,6 +74,7 @@ export async function authRoutes(app: FastifyInstance) {
         expiresIn: '30 days',
       },
     )
+    // console.log(token)
     return {
       token,
     }

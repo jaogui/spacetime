@@ -7,9 +7,16 @@ import { styled } from 'nativewind'
 import blurBg from './src/assets/luz.png'
 import Stripes from './src/assets/stripes.svg'
 import LogoMobile from './src/assets/logo-mobile.svg'
+import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
+import { useEffect } from 'react'
 
 
 const StyledStripes = styled(Stripes)
+const discovery = {
+  authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+  tokenEndpoint: 'https://github.com/login/oauth/access_token',
+  revocationEndpoint: 'https://github.com/settings/connections/applications/9c20b2c1d008c822bc7b',
+};
 
 export default function App() {
   const [hasLoadedFonts] = useFonts({
@@ -17,6 +24,28 @@ export default function App() {
     Roboto_400Regular,
     Roboto_700Bold
   })
+
+  const [request, response, signInWithGithub] = useAuthRequest(
+    {
+      clientId: '9c20b2c1d008c822bc7b',
+      scopes: ['identity'],
+      redirectUri: makeRedirectUri({
+        scheme: 'nlwspacetime'
+      }),
+    },
+    discovery
+  )
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { code } = response.params;
+      // console.log( makeRedirectUri({
+      //   scheme: 'nlwspacetime'
+      // }),)
+      console.log(code)
+    }
+  }, [response]);
+
 
   //Só carrega app depois das fontes
   if (!hasLoadedFonts) {
@@ -42,7 +71,8 @@ export default function App() {
         </View>
         <TouchableOpacity
           className="rounded-full bg-purple-400 px-5 py-3"
-          activeOpacity={0.7}>
+          activeOpacity={0.7}
+          onPress={() => signInWithGithub()}>
           <Text className="font-alt text-sm uppercase text-black">
             Cadastre-se lembrança
           </Text>

@@ -11,6 +11,9 @@ import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
 import { useEffect } from 'react'
 import { api } from './src/lib/api'
 
+import * as SecureStore from 'expo-secure-store';
+
+
 
 const StyledStripes = styled(Stripes)
 const discovery = {
@@ -47,8 +50,10 @@ export default function App() {
         code,
       }).then(response =>{
         const {token} = response.data
-
-        console.log(token)
+        // console.log(token)
+        SecureStore.setItemAsync('token', token)
+      }).catch((error)=>{
+        console.log(error)
       })
     }
   }, [response]);

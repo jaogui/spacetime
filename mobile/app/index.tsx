@@ -3,20 +3,66 @@ import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto'
 import { BaiJamjuree_700Bold } from '@expo-google-fonts/bai-jamjuree/'
 import { styled } from 'nativewind'
+import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
+import { useEffect } from 'react'
+import { api } from '../src/lib/api'
+import { useRouter } from 'expo-router'
 
-import blurBg from './src/assets/luz.png'
-import Stripes from './src/assets/stripes.svg'
-import LogoMobile from './src/assets/logo-mobile.svg'
+import * as SecureStore from 'expo-secure-store';
+import blurBg from '../src/assets/luz.png'
+import Stripes from '../src/assets/stripes.svg'
+import LogoMobile from '../src/assets/logo-mobile.svg'
 
 
 const StyledStripes = styled(Stripes)
+const discovery = {
+  authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+  tokenEndpoint: 'https://github.com/login/oauth/access_token',
+  revocationEndpoint: 'https://github.com/settings/connections/applications/9c20b2c1d008c822bc7b',
+};
 
 export default function App() {
+  const router = useRouter();
+
   const [hasLoadedFonts] = useFonts({
     BaiJamjuree_700Bold,
     Roboto_400Regular,
     Roboto_700Bold
   })
+
+  const [, response, signInWithGithub] = useAuthRequest(
+    {
+      clientId: '9c20b2c1d008c822bc7b',
+      scopes: ['identity'],
+      redirectUri: makeRedirectUri({
+        scheme: 'nlwspacetime'
+      }),
+    },
+    discovery
+  )
+
+  async function handleGithubOauthCode(code: string){
+    const response = await api.post('/register', {
+      code,
+    })
+    const {token} = response.data
+    // console.log(token)
+   await SecureStore.setItemAsync('token', token)
+
+   router.push('/memories')
+  }
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      // console.log( makeRedirectUri({
+      //   scheme: 'nlwspacetime'
+      // }),)
+      const { code } = response.params;
+
+      handleGithubOauthCode(code)
+    }
+  }, [response]);
+
 
   //Só carrega app depois das fontes
   if (!hasLoadedFonts) {
@@ -42,7 +88,8 @@ export default function App() {
         </View>
         <TouchableOpacity
           className="rounded-full bg-purple-400 px-5 py-3"
-          activeOpacity={0.7}>
+          activeOpacity={0.7}
+          onPress={() => signInWithGithub()}>
           <Text className="font-alt text-sm uppercase text-black">
             Cadastre-se lembrança
           </Text>

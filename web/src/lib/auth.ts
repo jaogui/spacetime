@@ -9,11 +9,11 @@ interface User {
 
 export function getUser() {
   const token = cookies().get('token')?.value
+  // console.log(token)
 
   if (!token) {
     throw new Error('Não autenticado')
   }
-
   const user: User = decode(token)
 
   return user

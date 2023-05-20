@@ -1,5 +1,6 @@
 import { getUser } from '@/lib/auth'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 function Profile() {
@@ -11,14 +12,17 @@ function Profile() {
         src={avatarUrl}
         width={40}
         height={40}
-        alt=""
+        alt="imagem"
         className="h-10 w-10 rounded-full"
       />
       <div className="max-w-[140px] text-sm leading-snug">
         <p className="font-sans text-sm text-gray-100">{name} </p>
-        <a href="" className="block text-sm text-red-400 hover:text-red-500">
+        <Link
+          href="api/auth/logout"
+          className="block text-sm text-red-400 hover:text-red-500"
+        >
           Sair
-        </a>
+        </Link>
       </div>
     </div>
   )

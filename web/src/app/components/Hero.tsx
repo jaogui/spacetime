@@ -1,6 +1,7 @@
 import React from 'react'
 import imgLogo from '../../assets/logo.svg'
 import Image from 'next/image'
+import Link from 'next/link'
 
 function Hero() {
   return (
@@ -16,12 +17,12 @@ function Hero() {
           com o mundo!
         </p>
       </div>
-      <a
+      <Link
         className="inline-block rounded-full bg-purple-500 px-5 py-3 font-alt text-sm uppercase leading-none text-black  transition-colors hover:bg-purple-600"
-        href=""
+        href="/memories/new"
       >
         CADASTRAR LEMBRANÇA
-      </a>
+      </Link>
     </div>
   )
 }

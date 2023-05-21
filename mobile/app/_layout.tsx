@@ -11,7 +11,6 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SecureStore from 'expo-secure-store'
-import { ScreenStack } from 'react-native-screens';
 
 const StyledStripes = styled(Stripes)
 
@@ -28,7 +27,7 @@ const [hasLoadedFonts] = useFonts({
 
 useEffect(()=>{
   SecureStore.getItemAsync('token').then(token =>{
-    console.log(!!token);
+    // console.log(!!token)
     setIsUserAuthenticade(!!token)
   })
 }, [])
@@ -42,13 +41,15 @@ if (!hasLoadedFonts) {
     <ImageBackground source={blurBg}
     className="bg-gray-900 flex-1 relative"
     imageStyle={{ position: 'absolute', left: '-100%' }}>
-    <StyledStripes className="absolute left-0 top-10" />
-    <StatusBar style="light" />
+    <StyledStripes className="absolute lef-2" />
+    <StatusBar style="light" translucent />
 
-    <Stack screenOptions={{headerShown: false, contentStyle:{backgroundColor: 'transparent'}}}>
-      <Stack.Screen name="index" redirect={isUserAuthenticated} />
-      <Stack.Screen name="memories" />
-    </Stack>
+    <Stack screenOptions={{headerShown: false, contentStyle:{backgroundColor: 'transparent'}}} >
+    <Stack.Screen name="index"  redirect={isUserAuthenticated}/>
+    <Stack.Screen name="newMemory" />
+
+        </Stack>
+
     </ImageBackground>
   )
 

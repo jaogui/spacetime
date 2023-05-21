@@ -1,9 +1,9 @@
-import { randomUUID } from 'crypto'
+import { randomUUID } from 'node:crypto'
+import { extname, resolve } from 'node:path'
 import { FastifyInstance } from 'fastify'
-import { createWriteStream } from 'fs'
-import { extname, resolve } from 'path'
-import { pipeline } from 'stream'
-import { promisify } from 'util'
+import { createWriteStream } from 'node:fs'
+import { pipeline } from 'node:stream'
+import { promisify } from 'node:util'
 
 const pump = promisify(pipeline)
 
@@ -19,22 +19,22 @@ export async function uploadRoutes(app: FastifyInstance) {
       return reply.status(400).send()
     }
 
-    const mimeTypeRegex = /\.(jpg|jpeg|png|gif|mp4|avi|mov)$/i
+    const mimeTypeRegex = /^(image|video)\/[a-zA-Z]+/
     const isValidFileFormat = mimeTypeRegex.test(upload.mimetype)
 
     if (!isValidFileFormat) {
       return reply.status(400).send()
     }
 
-    console.log(upload.file)
+    const fileId = randomUUID()
+    const extension = extname(upload.filename)
 
-    const fieldId = randomUUID()
-    const extensionFile = extname(upload.filename)
-    const fileName = fieldId.concat(extensionFile)
+    const fileName = fileId.concat(extension)
 
     const writeStream = createWriteStream(
-      resolve(__dirname, '../../uploads/', fileName),
+      resolve(__dirname, '..', '..', 'uploads', fileName),
     )
+
     await pump(upload.file, writeStream)
 
     const fullUrl = request.protocol.concat('://').concat(request.hostname)

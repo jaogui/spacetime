@@ -1,4 +1,4 @@
-import { Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ScrollView, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import SpaceTimeLogo from '../src/assets/logo-mobile.svg'
 import { Link } from 'expo-router'
 import Icon from '@expo/vector-icons/Feather'
@@ -10,7 +10,7 @@ export default function NewMemory() {
   const [isPublic, setIsPublic] = useState(false)
 
   return (
-    <View className="flex-1 px-8" style={{ paddingBottom: bottom, paddingTop: top }}>
+    <ScrollView className="flex-1 px-8" contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}>
       <View className="mt-4 flex-row items-center justify-between">
         <SpaceTimeLogo />
         <Link href="/memories" asChild>
@@ -32,9 +32,9 @@ export default function NewMemory() {
           <Text className="font-body text-base text-gray-200">Tornar memória pública</Text>
         </View>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           activeOpacity={0.7}
-        className="h-32 justify-center items-center rounded-lg border-dashed border-gray-500
+          className="h-32 justify-center items-center rounded-lg border-dashed border-gray-500
          bg-black/20">
           <View className="flex-row items-center gap-2">
             <Icon name="image" color="#FFF" />
@@ -44,13 +44,21 @@ export default function NewMemory() {
           </View>
         </TouchableOpacity>
 
-        <TextInput  
+        <TextInput
           multiline
-          className='p-0 font-body text-lg text-gray-200'
+          className='p-0 font-body text-lg text-gray-200 text-center'
           placeholderTextColor={"#56565a"}
-          placeholder='Fique livre para adicionar fotos, vídeos e relatos sobre essa experiência que você quer lembrar para sempre.'
-        />
+          placeholder='Fique livre para adicionar fotos, vídeos e relatos sobre essa experiência que você quer lembrar para sempre.'/>
+
+        <TouchableOpacity
+          className="rounded-full bg-purple-400 px-5 py-3 items-center self-center w-60"
+          activeOpacity={0.7}>
+          <Text className="font-alt text-sm uppercase text-black">
+            Salvar
+          </Text>
+        </TouchableOpacity>
+
       </View>
-    </View>
+    </ScrollView>
   )
 }

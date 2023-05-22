@@ -47,7 +47,7 @@ export default function RootLayout({
           </div>
 
           {/* Right Section */}
-          <div className="flex flex-col p-16">{children}</div>
+          <div className="flex flex-col">{children}</div>
         </main>
       </body>
     </html>

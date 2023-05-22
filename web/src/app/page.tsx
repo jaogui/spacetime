@@ -15,13 +15,29 @@ export default async function Home() {
     },
   })
 
-  const memories = response.data
+  interface MemoryInterfaceWeb {
+    id: string
+    imgUrl: string
+    excerpt: string
+    createdAt: string
+  }
 
-  if (memories.lenght === 0) {
+  const memories: MemoryInterfaceWeb[] = response.data
+  if (memories.length === 0) {
     return <EmptyMemories />
   }
 
   return (
-    <div className="flex flex-col gap-10 p-8">{JSON.stringify(memories)}</div>
+    <div className="flex flex-col gap-10 p-8">
+      {memories.map((memory) => {
+        return (
+          <div key={memory.id} className="space-y-4">
+            <time className="-ml-8 flex items-center gap-2 text-sm text-gray-100 before:h-px before:w-5 before:bg-gray-50">
+              {memory.createdAt}
+            </time>
+          </div>
+        )
+      })}
+    </div>
   )
 }

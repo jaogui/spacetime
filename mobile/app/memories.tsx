@@ -6,10 +6,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import * as SecureStore from 'expo-secure-store'
 import React, { useEffect, useState } from 'react'
 import { api } from '../src/lib/api'
+import dayjs from 'dayjs'
+import ptBr from 'dayjs/locale/pt-br'
+dayjs.locale(ptBr)
 
 interface MemoryInterface {
   imgUrl: string
   excerpt: string
+  createdAt: string
   id: string
 }
 
@@ -33,7 +37,6 @@ export default function Memory() {
     //  console.log(response.data)
     setMemories(response.data)
   }
-
   useEffect(() => {
     loadMemories()
   }, [])
@@ -63,7 +66,10 @@ export default function Memory() {
               <View key={memory.id} className="space-y-4">
                 <View className=" flex-row items-center gap-2">
                   <View className="h-px w-6 bg-gray-50"></View>
-                  <Text className="text-gray-100">12 de Abril, 2023</Text>
+                  <Text className="text-gray-100">
+                  {dayjs(memory.createdAt).format("D[ de ]MMMM[, ]YYYY ")}
+                    
+                  </Text>
                 </View>
                 <View className="space-y-4 px-8">
                   <Image source={{ uri: memory.imgUrl }}

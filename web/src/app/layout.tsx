@@ -47,7 +47,9 @@ export default function RootLayout({
           </div>
 
           {/* Right Section */}
-          <div className="flex flex-col">{children}</div>
+          <div className="flex max-h-screen flex-col overflow-y-scroll">
+            {children}
+          </div>
         </main>
       </body>
     </html>

@@ -15,40 +15,46 @@ import * as SecureStore from 'expo-secure-store'
 const StyledStripes = styled(Stripes)
 
 
-export default function Layout(){
+export default function Layout() {
 
   const [isUserAuthenticated, setIsUserAuthenticade] = useState<null | boolean>(null)
-  
-const [hasLoadedFonts] = useFonts({
-  BaiJamjuree_700Bold,
-  Roboto_400Regular,
-  Roboto_700Bold
-})
 
-useEffect(()=>{
-  SecureStore.getItemAsync('token').then(token =>{
-    // console.log(!!token)
-    setIsUserAuthenticade(!!token)
+  const [hasLoadedFonts] = useFonts({
+    BaiJamjuree_700Bold,
+    Roboto_400Regular,
+    Roboto_700Bold
   })
-}, [])
+
+  useEffect(() => {
+    SecureStore.getItemAsync('token').then(token => {
+      // console.log(!!token)
+      setIsUserAuthenticade(!!token)
+    })
+  }, [])
 
 
-if (!hasLoadedFonts) {
-  return <SplashScreen />
-  
-}
+  if (!hasLoadedFonts) {
+    return <SplashScreen />
+
+  }
   return (
     <ImageBackground source={blurBg}
-    className="bg-gray-900 flex-1 relative"
-    imageStyle={{ position: 'absolute', left: '-100%' }}>
-    <StyledStripes className="absolute lef-2" />
-    <StatusBar style="light" translucent />
+      className="bg-gray-900 flex-1 relative"
+      imageStyle={{ position: 'absolute', left: '-100%' }}>
+      <StyledStripes className="absolute lef-2" />
+      <StatusBar style="light" translucent />
 
-    <Stack screenOptions={{headerShown: false, contentStyle:{backgroundColor: 'transparent'}}} >
-    <Stack.Screen name="index"  redirect={isUserAuthenticated}/>
-    <Stack.Screen name="newMemory" />
+      <Stack screenOptions={
+        {
+          headerShown: false,
+          contentStyle: { backgroundColor: 'transparent' },
+          animation: 'fade'
+        }} >
+        <Stack.Screen name="index" redirect={isUserAuthenticated} />
+        <Stack.Screen name="newMemory" />
+        <Stack.Screen name="memories" />
 
-        </Stack>
+      </Stack>
 
     </ImageBackground>
   )

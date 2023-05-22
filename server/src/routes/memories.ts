@@ -3,11 +3,11 @@ import { z } from 'zod'
 import { prisma } from '../lib/prisma'
 
 export async function memoriesRoutes(app: FastifyInstance) {
+  // Antes de executar as querys ele verifica se o user está identificado
+  app.addHook('preHandler', async (request) => {
+    await request.jwtVerify()
+  })
   app.get('/memories', async (request) => {
-    // Antes de executar as querys ele verifica se o user está identificado
-    app.addHook('preHandler', async (request) => {
-      await request.jwtVerify()
-    })
     // Busca todas memorias de um usuário identificado
     const memories = await prisma.memoryPost.findMany({
       where: {
@@ -46,6 +46,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
 
   // Cria Memoria
   app.post('/memories', async (request) => {
+    console.log(request.user)
     const bodySchema = z.object({
       contentText: z.string(),
       imgUrl: z.string(),

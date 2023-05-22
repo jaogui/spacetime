@@ -7,7 +7,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export default function NewMemory() {
   const { bottom, top } = useSafeAreaInsets()
+  const [contentText, setContentText] = useState('')
   const [isPublic, setIsPublic] = useState(false)
+
+
+  function openImagePicker() {
+
+  }
+  function handleCreateMemory() {
+    console.log(contentText, isPublic)
+  }
 
   return (
     <ScrollView className="flex-1 px-8" contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}>
@@ -33,6 +42,7 @@ export default function NewMemory() {
         </View>
 
         <TouchableOpacity
+          onPress={openImagePicker}
           activeOpacity={0.7}
           className="h-32 justify-center items-center rounded-lg border-dashed border-gray-500
          bg-black/20">
@@ -46,13 +56,16 @@ export default function NewMemory() {
 
         <TextInput
           multiline
+          value={contentText}
+          onChangeText={setContentText}
           className='p-0 font-body text-lg text-gray-200 text-center'
           placeholderTextColor={"#56565a"}
-          placeholder='Fique livre para adicionar fotos, vídeos e relatos sobre essa experiência que você quer lembrar para sempre.'/>
+          placeholder='Fique livre para adicionar fotos, vídeos e relatos sobre essa experiência que você quer lembrar para sempre.' />
 
         <TouchableOpacity
           className="rounded-full bg-purple-400 px-5 py-3 items-center self-center w-60"
-          activeOpacity={0.7}>
+          activeOpacity={0.7}
+          onPress={handleCreateMemory}>
           <Text className="font-alt text-sm uppercase text-black">
             Salvar
           </Text>

@@ -3,7 +3,6 @@ import './globals.css'
 import {
   Roboto_Flex as Roboto,
   Bai_Jamjuree as Jamjuree,
-  Bai_Jamjuree,
 } from 'next/font/google'
 import Profile from './components/Profile'
 import SignIn from './components/SignIn'

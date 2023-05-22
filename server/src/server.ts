@@ -29,7 +29,8 @@ app.register(authRoutes)
 app
   .listen({
     port: 3333,
-    host: '0.0.0.0',
+    host: '::',
+    // host: '0.0.0.0',
   })
   .then(() => {
     console.log('Server rodando em localhost:3333 👌')

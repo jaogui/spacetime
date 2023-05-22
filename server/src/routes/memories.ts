@@ -37,7 +37,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
         id,
       },
     })
-    // Verifica se a memoria é publica e compara id do user com id do user logado p/ barrar esse acesso.
+    // Verifica se a memoria é publica e compara id do user com id do user lsogado p/ barrar esse acesso.
     if (!memory.isPublic && memory.id !== request.user.sub) {
       return reply.status(401).send()
     }
@@ -46,7 +46,6 @@ export async function memoriesRoutes(app: FastifyInstance) {
 
   // Cria Memoria
   app.post('/memories', async (request) => {
-    console.log(request.body)
     const bodySchema = z.object({
       contentText: z.string(),
       imgUrl: z.string(),

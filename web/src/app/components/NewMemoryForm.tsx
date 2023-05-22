@@ -17,22 +17,23 @@ export default function NewMemoryForm() {
     // console.log(Array.from(formData.entries()))
     const fileToUpload = formData.get('coverUrl')
 
-    let coverUrl = ''
+    let imgUrl = ''
 
     if (fileToUpload) {
       const uploadFormData = new FormData()
       uploadFormData.set('file', fileToUpload)
       const uploadResponse = await api.post('/upload', uploadFormData)
 
-      coverUrl = uploadResponse.data.fileUrl
+      imgUrl = uploadResponse.data.fileUrl
     }
 
     const token = Cookie.get('token')
+    console.log(token)
     await api.post(
       '/memories',
       {
-        coverUrl,
-        content: formData.get('content'),
+        imgUrl,
+        contentText: formData.get('content'),
         isPublic: formData.get('isPublic'),
       },
       {

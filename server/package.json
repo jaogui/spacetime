@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
+    "start": "src/server.ts",
     "dev": "tsx watch src/server.ts",
     "lint": "eslint src --ext .ts --fix"
   },
